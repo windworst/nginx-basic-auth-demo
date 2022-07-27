@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  app:
+    image: b3log/siyuan
+    volumes:
+      - ./data/app:/home/siyuan/Documents/SiYuan
+    depends_on:
+      - nginx
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./auth:/auth
+      - ./conf.d:/etc/nginx/conf.d
+  registry-auth-password:
+    image: xmartlabs/htpasswd
+    entrypoint:
+      - sh
+      - /registry-auth-password.sh
+    volumes:
+      - ./registry-auth-password.sh:/registry-auth-password.sh
+      - ./auth:/auth
